@@ -145,10 +145,20 @@ function displayQuestion() {
 }
 
 function submitAnswer() {
-    const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
+    let userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
 
     // Extract the correct answer, ignoring anything in brackets
-    const correctAnswer = questionsOrder[currentQuestionIndex][1].split('(')[0].trim().toLowerCase();
+    let correctAnswer = questionsOrder[currentQuestionIndex][1].split('(')[0].trim().toLowerCase();
+
+    // If the correct answer starts with "the", remove it
+    if (correctAnswer.startsWith('the ')) {
+        correctAnswer = correctAnswer.replace(/^the\s+/i, '').trim();
+    }
+
+    // If the user's answer starts with "the", remove it
+    if (userAnswer.startsWith('the ')) {
+        userAnswer = userAnswer.replace(/^the\s+/i, '').trim();
+    }
 
     if (userAnswer === correctAnswer) {
         score++;
