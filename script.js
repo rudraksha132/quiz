@@ -146,7 +146,9 @@ function displayQuestion() {
 
 function submitAnswer() {
     const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
-    const correctAnswer = questionsOrder[currentQuestionIndex][1].toLowerCase();
+
+    // Extract the correct answer, ignoring anything in brackets
+    const correctAnswer = questionsOrder[currentQuestionIndex][1].split('(')[0].trim().toLowerCase();
 
     if (userAnswer === correctAnswer) {
         score++;
