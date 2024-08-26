@@ -176,6 +176,19 @@ function submitAnswer() {
         alert(`You've completed the quiz! Your score is ${score} out of ${questionsOrder.length}. Restarting...`);
         startQuiz();
     } else {
-        document.getElementById('quiz-content').innerHTML = `<p>You've completed the quiz!</p><p>Your score is ${score} out of ${questionsOrder.length}.</p>`;
+        endQuiz();
     }
+}
+
+function endQuiz() {
+    // Calculate the number of questions attempted
+    const questionsAttempted = currentQuestionIndex;
+
+    // Hide the question and answer input
+    document.getElementById('quiz-content').innerHTML = `
+        <p>Quiz ended.</p>
+        <p>Your progress:</p>
+        <p>Answered ${questionsAttempted} out of ${questionsOrder.length} questions.</p>
+        <p>Your score is ${score} out of ${questionsAttempted}.</p>
+    `;
 }
