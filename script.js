@@ -186,7 +186,7 @@ function endQuiz() {
 
     // Hide the question and answer input
     document.getElementById('quiz-content').innerHTML = `
-        <p>Quiz ended.</p>
+        <h3>Quiz ended.</h3>
         <p>Your progress:</p>
         <p>Answered ${questionsAttempted} out of ${questionsOrder.length} questions.</p>
         <p>Your score is ${score} out of ${questionsAttempted}.</p>
