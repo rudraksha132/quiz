@@ -98,6 +98,9 @@ let score = 0;
 let currentQuestionIndex = 0;
 let questionsOrder = [];
 let attemptsLeft = 1;
+let startTime;
+let questionStartTime;
+let questionTimes = [];
 
 function startQuiz() {
     const mode = document.getElementById('mode').value;
@@ -105,6 +108,8 @@ function startQuiz() {
     
     score = 0;
     currentQuestionIndex = 0;
+    questionTimes = [];
+    startTime = new Date(); // Record the start time
 
     if (attemptsOption === "multiple") {
         attemptsLeft = Infinity;
@@ -123,23 +128,21 @@ function startQuiz() {
     document.getElementById('quiz-content').classList.remove('hidden');
 
     displayQuestion();
-
-    // Add an event listener for the Enter key on the answer input field
-    document.getElementById('user-answer').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            submitAnswer();
-        }
-    });
 }
 
 function displayQuestion() {
     document.getElementById('question').textContent = questionsOrder[currentQuestionIndex][0];
     document.getElementById('user-answer').value = '';
+    questionStartTime = new Date(); // Record the start time for the current question
 }
 
 function submitAnswer() {
     const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
     const correctAnswer = questionsOrder[currentQuestionIndex][1].toLowerCase();
+    const questionEndTime = new Date(); // Record the end time for the current question
+    const questionTime = Math.round((questionEndTime - questionStartTime) / 1000); // Time in seconds
+
+    questionTimes.push(questionTime);
 
     if (userAnswer === correctAnswer) {
         score++;
@@ -157,6 +160,48 @@ function submitAnswer() {
         alert(`You've completed the quiz! Your score is ${score} out of ${questionsOrder.length}. Restarting...`);
         startQuiz();
     } else {
-        document.getElementById('quiz-content').innerHTML = `<p>You've completed the quiz!</p><p>Your score is ${score} out of ${questionsOrder.length}.</p>`;
+        endQuiz();
     }
+}
+
+function endQuiz() {
+    const endTime = new Date(); // Record the end time
+    const totalTime = Math.round((endTime - startTime) / 1000); // Total time in seconds
+    const averageTime = (questionTimes.reduce((a, b) => a + b, 0) / questionTimes.length).toFixed(2); // Average time per question in seconds
+    const accuracy = ((score / questionsOrder.length) * 100).toFixed(2); // Accuracy in percentage
+
+    // Show results and hide quiz content
+    document.getElementById('quiz-content').innerHTML = `
+        <h3>You've completed the quiz!</h3>
+        <p>Your score: ${score} out of ${questionsOrder.length}</p>
+        <p>Accuracy: ${accuracy}%</p>
+        <p>Total Time Taken: ${totalTime} seconds</p>
+        <p>Average Time per Question: ${averageTime} seconds</p>
+        <button onclick="restartQuiz()">Restart Quiz</button>
+        <button onclick="quitQuiz()">Quit</button>
+    `;
+}
+
+function quitQuiz() {
+    const endTime = new Date(); // Record the end time
+    const totalTime = Math.round((endTime - startTime) / 1000); // Total time in seconds
+    const averageTime = (questionTimes.reduce((a, b) => a + b, 0) / questionTimes.length).toFixed(2); // Average time per question in seconds
+    const accuracy = ((score / questionsOrder.length) * 100).toFixed(2); // Accuracy in percentage
+    const scoreMessage = `
+        <p>Your score: ${score} out of ${questionsOrder.length}</p>
+        <p>Accuracy: ${accuracy}%</p>
+        <p>Total Time Taken: ${totalTime} seconds</p>
+        <p>Average Time per Question: ${averageTime} seconds</p>
+    `;
+
+    // Show the setup and hide the quiz content
+    document.getElementById('setup').classList.remove('hidden');
+    document.getElementById('quiz-content').classList.add('hidden');
+
+    // Display the score message
+    document.getElementById('setup').insertAdjacentHTML('beforeend', scoreMessage);
+}
+
+function restartQuiz() {
+    startQuiz(); // Restart the quiz
 }
