@@ -123,6 +123,13 @@ function startQuiz() {
     document.getElementById('quiz-content').classList.remove('hidden');
 
     displayQuestion();
+
+    // Add an event listener for the Enter key on the answer input field
+    document.getElementById('user-answer').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            submitAnswer();
+        }
+    });
 }
 
 function displayQuestion() {
