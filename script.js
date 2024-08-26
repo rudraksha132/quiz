@@ -125,11 +125,13 @@ function startQuiz() {
         questionsOrder = [...qaPairs];
     }
 
+    // Hide the setup and show the quiz content
     document.getElementById('setup').classList.add('hidden');
     document.getElementById('quiz-content').classList.remove('hidden');
 
     displayQuestion();
 
+    // Add an event listener for the Enter key on the answer input field
     document.getElementById('user-answer').addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             submitAnswer();
@@ -144,11 +146,16 @@ function displayQuestion() {
 
 function submitAnswer() {
     let userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
+
+    // Extract the correct answer, ignoring anything in brackets
     let correctAnswer = questionsOrder[currentQuestionIndex][1].split('(')[0].trim().toLowerCase();
 
+    // If the correct answer starts with "the", remove it
     if (correctAnswer.startsWith('the ')) {
         correctAnswer = correctAnswer.replace(/^the\s+/i, '').trim();
     }
+
+    // If the user's answer starts with "the", remove it
     if (userAnswer.startsWith('the ')) {
         userAnswer = userAnswer.replace(/^the\s+/i, '').trim();
     }
@@ -171,8 +178,4 @@ function submitAnswer() {
     } else {
         document.getElementById('quiz-content').innerHTML = `<p>You've completed the quiz!</p><p>Your score is ${score} out of ${questionsOrder.length}.</p>`;
     }
-}
-
-function quitQuiz() {
-    document.getElementById('quiz-content').innerHTML = `<p>You've quit the quiz.</p><p>Your score is ${score} out of ${currentQuestionIndex}.</p>`;
 }
