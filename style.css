@@ -101,6 +101,30 @@ input[type="text"]::placeholder {
     color: #999;
 }
 
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Quit Button Styling */
+.quit-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 48%;
+}
+
+.quit-btn:hover {
+    background-color: #c82333;
+}
+
 /* Hidden Class */
 .hidden {
     display: none;
